@@ -1,5 +1,3 @@
-import { ImageSourcePropType } from "react-native"
-
 export interface AnimeProps {
     mal_id: number
     url: string
@@ -45,6 +43,21 @@ export interface AnimeProps {
     themes: Entity[]
     entry: AnimeProps[]
 }
+
+export interface StatsProps {
+  watching: number
+  completed: number
+  on_hold: number
+  dropped: number
+  plan_to_watch: number
+  total: number
+  scores: {
+    score: number
+    votes: number
+    percentage: number
+  }
+}
+
 
 export interface PaginationProps {
     last_visible_page: number

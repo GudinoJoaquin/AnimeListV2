@@ -5,15 +5,14 @@ import {
   View,
   Pressable,
 } from "react-native";
-import { getAnimes } from "@/hooks/useAnimes";
 import { AnimeProps } from "@/utils/interfaces";
 import { RecomendedSkeleton } from "./Loading"; // Importar el skeleton
 import { Link } from "expo-router";
+import useRecomendedAnimes from "@/hooks/useRecomendedAnimes";
+import RecomendedCard from "./RecomendedCard";
 
 export default function Recomended() {
-  const { animes, loading, error } = getAnimes(
-    "https://api.jikan.moe/v4/recommendations/anime"
-  );
+  const { animes, loading, error } = useRecomendedAnimes();
 
   // Si no hay animes o hay un error
   if (error) return <Text>Error al cargar animes</Text>;
@@ -36,25 +35,8 @@ export default function Recomended() {
       data={animes}
       renderItem={({ item }: { item: AnimeProps }) => (
         <View className="flex-row">
-          {item.entry.map((entry: AnimeProps) => (
-            <Link key={entry.mal_id} href={`/${entry.mal_id}`} asChild>
-              <Pressable>
-                <View
-                  className="relative w-[152] h-[217] mx-[10px]"
-                >
-                  <Image
-                    className="w-full h-full object-cover rounded-[10px]"
-                    source={{
-                      uri: entry.images.jpg.large_image_url,
-                    }}
-                  />
-                  <View className="absolute inset-0 bg-black opacity-40 rounded-[10px]" />
-                  <Text className="absolute bottom-2 left-2 text-white font-bold text-lg">
-                    {entry.title}
-                  </Text>
-                </View>
-              </Pressable>
-            </Link>
+          {item.entry.map((entry: AnimeProps, index) => (
+            <RecomendedCard anime={entry} key={index}/>
           ))}
         </View>
       )}

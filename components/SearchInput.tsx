@@ -1,17 +1,23 @@
 // components/SearchInput.tsx
 
-import React, { useState } from "react";
-import { View, TextInput, Pressable } from "react-native";
+import React from "react";
+import { View, TextInput, Pressable, Text } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { useNavigation } from "@react-navigation/native";
 
 interface SearchInputProps {
   value: string;
   onChangeText: (text: string) => void;
 }
+export default function SearchInput({ value, onChangeText }: SearchInputProps) {
+  const navigation = useNavigation();
 
-const SearchInput: React.FC<SearchInputProps> = ({ value, onChangeText }) => {
   return (
     <View className="px-[10px] py-[15px] flex-row items-center">
+      <Pressable className="mr-[20px]" onPress={() => navigation.goBack()}>
+        <FontAwesome5 name="arrow-left" size={24} color="black" />
+      </Pressable>
       <TextInput
         value={value}
         onChangeText={onChangeText}
@@ -31,6 +37,4 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, onChangeText }) => {
       )}
     </View>
   );
-};
-
-export default SearchInput;
+}

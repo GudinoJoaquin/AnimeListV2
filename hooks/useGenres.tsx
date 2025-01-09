@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Entity } from "@/utils/interfaces";
+import axios from "axios";
 
-export default function useGenres(url: string) {
+export default function useGenres() {
   const [genres, setGenres] = useState<Entity[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,10 +11,9 @@ export default function useGenres(url: string) {
     async function fetchGenres() {
       try {
         setLoading(true);
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("Error al obtener los generos");
-        const data = await response.json();
-        setGenres(data.data || []);
+        const response = await axios.get("https://api.jikan.moe/v4/genres/anime");
+        if (!response.data.ok) throw new Error("Error al obtener los generos");
+        setGenres(response.data.data || []);
       } catch (err: any) {
         setError(err.message || "Error desconocido");
       } finally {

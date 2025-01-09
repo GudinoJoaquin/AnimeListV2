@@ -11,8 +11,12 @@ import Nav from "./Nav";
 import { Stack } from "expo-router/stack";
 import { useRoute } from "@react-navigation/native";
 
+interface ScreenProps {
+  children: React.ReactNode;
+  header?: boolean;
+}
 // Componente Screen
-const Screen = ({ children }: { children: React.ReactNode }) => {
+const Screen = ({ children, header }: ScreenProps) => {
   const route = useRoute();
   const statusBarHeight = Platform.OS === "ios" ? 20 : StatusBar.currentHeight; // Ajuste dinámico según plataforma
   const formattedHeaderTitle = route.name.split("/")[0];
@@ -24,10 +28,7 @@ const Screen = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <View
-      style={[
-        styles.container,
-         { paddingTop: statusBarHeight },
-      ]}
+      style={[styles.container, !header && { paddingTop: statusBarHeight }]}
     >
       <ExpoStatusBar style="dark" />
       {/* <Stack.Screen

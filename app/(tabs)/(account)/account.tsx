@@ -6,6 +6,7 @@ import useGenres from "@/hooks/useGenres";
 import SearchInput from "@/components/SearchInput"; // Componente de entrada
 import useSearch from "@/hooks/useSearch"; // Custom hook para la lógica
 import Nav from "@/components/Nav";
+import Screen from "@/components/Screen";
 
 export default function Index() {
   const { genres } = useGenres("https://api.jikan.moe/v4/genres/anime");
@@ -20,7 +21,7 @@ export default function Index() {
   if (!genres) return <Text>No hay géneros disponibles</Text>;
 
   return (
-    <View>
+    <Screen>
       {/* Usar SearchInput con el hook */}
       <ScrollView>
         <SearchInput value={searchQuery} onChangeText={setSearchQuery} />
@@ -40,8 +41,6 @@ export default function Index() {
           <AnimeList searchQuery={searchUrl} />
         </View>
       </ScrollView>
-
-      {!isKeyboardVisible && <Nav />}
-    </View>
+    </Screen>
   );
 }

@@ -1,35 +1,23 @@
 import { ScrollView, Text, View, Pressable } from "react-native";
-import Card from "./Card";
 import useAnimes from "@/hooks/useAnimes";
 import { AnimeProps } from "@/utils/interfaces";
 import { useState } from "react";
 import { AnimeListCardSkeleton } from "./Loading";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { Sort } from "@/utils/types";
+import RecomendedCard from "./RecomendedCard";
 
-interface AnimeListProps {
-  searchQuery?: string;
-  order?: string;
-  sort?: Sort;
-}
-
-export default function AnimeList({
-  searchQuery = 'https://api.jikan.moe/v4/anime?',
-  order = "score",
-  sort = "desc",
-}: AnimeListProps) {
+export default function ExploreList({ searchQuery }: { searchQuery: string }) {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { animes, pagination, loading } = useAnimes(
     `${searchQuery}page=${currentPage}`,
-    order,
-    sort
+    "popularity",
+    "asc"
   );
 
   if (loading) {
     return (
       <ScrollView>
-        {/* Mostrar Skeleton solo si loading es verdadero */}
         {[...Array(10)].map((_, index) => (
           <AnimeListCardSkeleton key={index} />
         ))}
@@ -44,7 +32,8 @@ export default function AnimeList({
       </View>
     );
   }
-  if (!pagination) return <Text>No hay paginacion</Text>;
+
+  if (!pagination) return <Text>No hay paginación</Text>;
 
   const handleNextPage = () => {
     if (pagination.has_next_page) {
@@ -58,11 +47,25 @@ export default function AnimeList({
     }
   };
 
+  // Agrupar animes en filas de 2 elementos
+  const animeRows: AnimeProps[][] = [];
+  for (let i = 0; i < animes.length; i += 2) {
+    animeRows.push(animes.slice(i, i + 2));
+  }
+
   return (
     <ScrollView>
-      {animes.map((anime: AnimeProps, index) => (
-        <Card key={index} anime={anime} />
+      {animeRows.map((row, rowIndex) => (
+        <View
+          key={rowIndex}
+          className="flex-row justify-center items-center my-2"
+        >
+          {row.map((anime, index) => (
+            <RecomendedCard anime={anime} key={index} />
+          ))}
+        </View>
       ))}
+
       <View className="flex-row items-center justify-center gap-[10px] mb-[100px]">
         <Pressable
           onPress={handlePreviousPage}

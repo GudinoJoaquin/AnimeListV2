@@ -1,13 +1,13 @@
 import { Image, Text, View, StyleSheet, ScrollView } from "react-native";
-import { getAnimeById } from "../hooks/useAnimes";
 import { useLocalSearchParams } from "expo-router";
 import { Table, TableRow } from "../components/Tables";
 import { Stack } from "expo-router/stack";
 import Screen from "@/components/Screen";
+import useAnimeById from "@/hooks/useAnimeById";
 
 export default function Details() {
-  const { id } = useLocalSearchParams();
-  const { anime } = getAnimeById(id);
+  const { mal_id } = useLocalSearchParams();
+  const { anime } = useAnimeById(mal_id);
 
   if (!anime) return;
 
