@@ -3,13 +3,12 @@ import { AnimeProps, PaginationProps } from "@/utils/interfaces";
 import { Sort } from "@/utils/types";
 import axios from "axios";
 
-
-
 export default function useAnimes(
   url: string, // Valor predeterminado para la URL
   order_by: string = "popularity", // Valor predeterminado para 'order_by'
   sort: Sort = "desc", // Valor predeterminado para 'sort'
-  genres?: number[]
+  genres?: number[],
+  status: string = ''
 ) {
   const [animes, setAnimes] = useState<AnimeProps[]>([]);
   const [pagination, setPagination] = useState<PaginationProps>();
@@ -22,6 +21,7 @@ export default function useAnimes(
     sfw: true,
     limit: 24,
     genres: genres?.join(','),
+    status: status
   }
 
   useEffect(() => {

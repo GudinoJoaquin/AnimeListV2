@@ -9,8 +9,10 @@ import {
   UserIcon,
 } from "@/components/Icons";
 import { Pressable } from "react-native";
+import useSearch from "@/hooks/useSearch";
 
 export default function TabsLayout() {
+  const { isKeyboardVisible } = useSearch()
   return (
     <Tabs
       screenOptions={{
@@ -18,6 +20,7 @@ export default function TabsLayout() {
           alignItems: "center",
           justifyContent: "center",
           position: "absolute",
+          bottom: isKeyboardVisible ? -300 : 0,
           backgroundColor: "#ffffff", // Fondo sólido
           borderRadius: 16, // Bordes redondeados
           marginHorizontal: 16, // Margen lateral

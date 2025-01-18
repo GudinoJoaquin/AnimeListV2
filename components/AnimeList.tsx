@@ -11,19 +11,23 @@ interface AnimeListProps {
   searchQuery?: string;
   order?: string;
   sort?: Sort;
+  status?: string
 }
 
 export default function AnimeList({
   searchQuery = 'https://api.jikan.moe/v4/anime?',
   order = "score",
   sort = "desc",
+  status = ''
 }: AnimeListProps) {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { animes, pagination, loading } = useAnimes(
     `${searchQuery}page=${currentPage}`,
     order,
-    sort
+    sort,
+    [],
+    status
   );
 
   if (loading) {

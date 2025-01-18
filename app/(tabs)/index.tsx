@@ -3,6 +3,7 @@ import { Text, ScrollView, View } from "react-native";
 import AnimeList from "@/components/AnimeList";
 import Recomended from "@/components/Recomended";
 import Screen from "@/components/Screen";
+import Notification from '@/components/Notification'
 
 export default function Index() {
 
@@ -13,6 +14,7 @@ export default function Index() {
           <View>
             <Text className="font-bold text-3xl px-[10px] py-[15px]">
               Recomendaciones
+              
             </Text>
             <View className="items-center pb-[20px]">
               <Recomended />

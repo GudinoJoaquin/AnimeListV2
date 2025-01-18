@@ -1,13 +1,26 @@
-import { Image, Text, View, StyleSheet, ScrollView } from "react-native";
+import {
+  Image,
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  Button,
+  Pressable,
+  Alert,
+} from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { Table, TableRow } from "../components/Tables";
 import { Stack } from "expo-router/stack";
 import Screen from "@/components/Screen";
 import useAnimeById from "@/hooks/useAnimeById";
+import Notification from "@/components/Notification";
+import { supabase } from "@/utils/supabase";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Details() {
   const { mal_id } = useLocalSearchParams();
   const { anime } = useAnimeById(mal_id);
+  const navigation = useNavigation();
 
   if (!anime) return;
 
@@ -30,6 +43,28 @@ export default function Details() {
   const releaseDate = aired?.prop?.from;
   const finishDate = aired?.prop?.to;
 
+  const saveAnime = async () => {
+    const { data } = await supabase.auth.getSession();
+    const { session } = data;
+    if (!session) {
+      navigation.navigate("(account)/account" as never);
+      return;
+    }
+
+    const { error } = await supabase
+      .from("users_animes")
+      .insert([{ 
+        user_id: session?.user?.id, 
+        anime_id: mal_id 
+      }])
+      .select();
+    if (error) {
+      console.log(error);
+    } else {
+      Alert.alert(`${title} agregado correctamente a la lista`);
+    }
+  };
+
   return (
     <Screen>
       <ScrollView style={styles.container}>
@@ -40,11 +75,21 @@ export default function Details() {
           }}
         />
         <View style={styles.imageContainer}>
+          <Notification
+            title={title}
+            body={`Estas visitando la pagina del anime ${title}`}
+          />
           <Image
             style={styles.image}
             source={{ uri: images?.jpg?.image_url }}
           />
         </View>
+        <Pressable
+          onPress={saveAnime}
+          className="items-center justify-center bg-green-400 mx-[70px] py-[5px] rounded-md"
+        >
+          <Text className="text-white font-semibold">Agregar a favoritos</Text>
+        </Pressable>
         <Text style={styles.title}>{title || title_english}</Text>
         <Text style={styles.subtitle}>{title_japanese}</Text>
         <View className="items-center justify-center flex-row mx-[50px] flex-wrap gap-[5px]">

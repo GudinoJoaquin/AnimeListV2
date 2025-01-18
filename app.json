@@ -10,13 +10,16 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gudi289347.AnimeListV2"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.gudi289347.AnimeListV2",
+      "googleServicesFile": "./anilist-c9cbd-firebase-adminsdk-fbsvc-340cd1cbe2"
     },
     "web": {
       "bundler": "metro",
@@ -37,6 +40,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "6f289f7a-967e-44c6-bd76-a2e3a47d3305"
+      }
     }
   }
 }
