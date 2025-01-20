@@ -75,7 +75,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="(season)/season"
         options={{
-          title: "(Season)/season",
+          title: "Season",
           tabBarIcon: ({ focused }) => (
             <CalendarIcon size={24} color={focused ? "#3b82f6" : "#9ca3af"} />
           ),

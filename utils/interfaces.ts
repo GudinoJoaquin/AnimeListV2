@@ -1,3 +1,5 @@
+import { AnimeStatusType } from "./types"
+
 export interface AnimeProps {
     mal_id: number
     url: string
@@ -13,6 +15,7 @@ export interface AnimeProps {
     title: string
     title_english: string
     title_japanese: string
+    title_synonyms: string
     type: string
     episodes: number
     status: string
@@ -56,6 +59,15 @@ export interface StatsProps {
     votes: number
     percentage: number
   }
+}
+
+export interface AnimesDataProps {
+  user_id?: number
+  anime_id: number
+  anime_score: number
+  anime_episodes_watched: number
+  anime_status: AnimeStatusType
+  saved_at: string
 }
 
 

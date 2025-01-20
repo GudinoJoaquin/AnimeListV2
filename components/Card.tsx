@@ -43,9 +43,9 @@ export default function Card({ anime }: { anime: AnimeProps }) {
               <View className="flex-row justify-between items-center">
                 <View className="flex-col max-w-[75%]">
                   {title_english ? (
-                    <Text className="text-lg font-bold">{truncatedTitle}</Text>
+                    <Text className="text-lg font-bold leading-tight">{truncatedTitle}</Text>
                   ) : (
-                    <Text className="text-lg font-bold">{truncatedTitle}</Text>
+                    <Text className="text-lg font-bold leading-tight">{truncatedTitle}</Text>
                   )}
                 </View>
                 <Score score={score} />

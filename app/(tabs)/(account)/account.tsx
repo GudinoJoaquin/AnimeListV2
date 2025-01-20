@@ -4,6 +4,7 @@ import Screen from "@/components/Screen";
 import { supabase } from "@/utils/supabase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AnimeProps } from "@/utils/interfaces";
 
 type VisibleType = "signin" | "signup";
@@ -13,12 +14,20 @@ type AuthProps = {
   setSession?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+export type RootStackParamList = {
+  "(account)/account": { key: string } | undefined; // La clave `key` es opcional
+  "(other)/screen": undefined; // Otras pantallas
+};
+
+type AccountScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, "(account)/account">;
+
+
 export default function Account() {
   const [visible, setVisible] = useState<VisibleType>("signin");
   const [session, setSession] = useState<boolean>(false);
   const [animeIds, setAnimeIds] = useState<number[]>([]);
   const [animes, setAnimes] = useState<AnimeProps[]>([]);
-  const navigation = useNavigation();
+  const navigation = useNavigation<AccountScreenNavigationProp>();
 
   useEffect(() => {
     const handleSession = async () => {
@@ -84,13 +93,8 @@ export default function Account() {
 
   const signOut = async () => {
     await supabase.auth.signOut();
-    navigation.reset({
-      index: 0,
-      routes: [
-        {
-          name: "(account)/account" as never,
-        },
-      ],
+    navigation.navigate("(account)/account", {
+      key: Math.random().toString(), // Genera una clave única para forzar la recarga.
     });
   };
 
@@ -114,7 +118,6 @@ export default function Account() {
               renderItem={({ item }) => (
                 <View>
                   <Text>{item.title}</Text>
-                  <Text>{item.synopsis}</Text>
                   <Text>Score: {item.score}</Text>
                 </View>
               )}
@@ -133,7 +136,7 @@ export default function Account() {
 function SignIn({ setVisible }: AuthProps) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const navigation = useNavigation();
+  const navigation = useNavigation<AccountScreenNavigationProp>();
 
   const storeSession = async (session: any) => {
     try {
@@ -158,13 +161,8 @@ function SignIn({ setVisible }: AuthProps) {
         console.log(data);
         storeSession(data.session);
       }
-      navigation.reset({
-        index: 0,
-        routes: [
-          {
-            name: "(account)/account" as never,
-          },
-        ],
+      navigation.navigate("(account)/account", {
+        key: Math.random().toString(), // Genera una clave única para forzar la recarga.
       });
     } catch (err) {
       console.log(err);
@@ -207,7 +205,7 @@ function SignUp({ setVisible }: AuthProps) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [repitedPassword, setRepitedPassword] = useState<string>("");
-  const navigation = useNavigation();
+  const navigation = useNavigation<AccountScreenNavigationProp>();
 
   const handleSubmit = async () => {
     if (!password || !email.toLowerCase() || !repitedPassword) {
@@ -228,13 +226,8 @@ function SignUp({ setVisible }: AuthProps) {
       setEmail("");
       setPassword("");
       setRepitedPassword("");
-      navigation.reset({
-        index: 0,
-        routes: [
-          {
-            name: "(account)/account" as never,
-          },
-        ],
+      navigation.navigate("(account)/account", {
+        key: Math.random().toString(), // Genera una clave única para forzar la recarga.
       });
     } catch (err) {
       console.log(err);
